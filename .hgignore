@@ -1,0 +1,8 @@
+syntax: glob
+fishingBot/.vs/fishingBot/v15
+fishingBot/obj/Debug/Assembly-CSharp.csproj.CoreCompileInputs.cache
+fishingBot/obj/Debug/Assembly-CSharp.csprojAssemblyReference.cache
+fishingBot/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+fishingBot/obj/Debug
+fishingBot/Library
+fishingBot/.vs/fishingBot/DesignTimeBuild/.dtbcache
