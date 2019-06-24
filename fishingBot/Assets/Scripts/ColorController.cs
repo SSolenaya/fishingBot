@@ -1,29 +1,43 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class ColorController: MonoBehaviour {
 
     public static ColorController inst;
-    private Camera cam = Camera.main;
 
-    public Camera Cam { get => cam; set => cam = value; }
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr GetDesktopWindow ();
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr GetWindowDC (IntPtr window);
+
+    [DllImport("gdi32.dll", SetLastError = true)]
+    public static extern uint GetPixel (IntPtr dc, int x, int y);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern int ReleaseDC (IntPtr window, IntPtr dc);
 
     void Awake () {
         inst = this;
     }
 
     public Color GetPixelColor(Vector2 positionOfPxl) {
-        Ray ray = Cam.ScreenPointToRay(positionOfPxl);
-        Physics.Raycast(Cam.transform.position, ray.direction, out var hit, 10000.0f);
-        Color c;
-        if (hit.collider) {
-            Texture2D tex =
-                (Texture2D) hit.collider.GetComponent<Renderer>().material.mainTexture; // текстура объекта под курсором
-            c = tex.GetPixelBilinear(hit.textureCoord2.x, hit.textureCoord2.y); // цвет этой текстуры
-            return c;
-        }
-        else return Color.red;
+        IntPtr desk = GetDesktopWindow();
+        IntPtr dc = GetWindowDC(desk);
+        int a = (int)GetPixel(dc, (int)positionOfPxl.x, (int)positionOfPxl.y);
+        ReleaseDC(desk, dc);
+        return ConvertFromRgb(255, (a >> 0) & 0xff, (a >> 8) & 0xff, (a >> 16) & 0xff);
+    }
+
+    public static Color ConvertFromRgb (int alpha, int red, int green, int blue) {
+        float fa = ((float)alpha) / 255.0f;
+        float fr = ((float)red) / 255.0f;
+        float fg = ((float)green) / 255.0f;
+        float fb = ((float)blue) / 255.0f;
+        return new Color(fr, fg, fb, fa);
     }
 
     void Start () {

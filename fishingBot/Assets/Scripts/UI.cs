@@ -5,60 +5,92 @@ using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI : MonoBehaviour {
+public class UI: MonoBehaviour {
     public Rect testRect;
     public Button startBtn;
     public Button stopBtn;
     public Text mousePositionTxt;
+    public Text pixelColorTxt;
+    private Color c;
+    //public bool stop;
+    public List<Coroutine> coroList = new List<Coroutine>();
 
-    public Coroutine coroMouseCoords;
-    public bool stop;
-    public Color mainBtnColor;
-    public Color rainbowColor;
-    
-
-    
-    public IEnumerator IMouseCoords() { // корутин координаты курсора в реальном времени
-        while (!stop) {
+    public IEnumerator IMouseCoords () { // корутин координаты курсора в реальном времени
+        while(true) {
             ShowMousePos();
             yield return null;
         }
     }
 
-    public IEnumerator choosingWindowDelay() {  //задержка времени для выбора окна рыбалки
-        {
-            yield return new WaitForSeconds(5f);
-            WindowMode.inst.SetCurrentPosAndSize(GlobalParameters.positionOfWindowFishing, GlobalParameters.sizeOfWindowFishing);
+    public IEnumerator IChoosingWindowDelay () {  //задержка времени для выбора окна рыбалки
+        yield return new WaitForSeconds(2f);
+        WindowMode.inst.SetCurrentPosAndSize(GlobalParameters.positionOfWindowFishing, GlobalParameters.sizeOfWindowFishing);
+    }
+
+ /*   [ContextMenu("TestStartITestCheckColor")]
+    public void TestStartITestCheckColor() {
+        StartCoroutines(ITestCheckColor());
+    }
+
+    public IEnumerator ITestCheckColor () { // bear
+        while(true) {
+            var v2 =new Vector2(335,590);
+            c = ColorController.inst.GetPixelColor(v2);
+            Debug.Log(c.r + " " + c.g + " " + c.b + " " + c.a);
+            yield return new WaitForSeconds(1f);
+        }
+    }*/
+
+    public void StartCoroutines (IEnumerator Ienum) {
+        Coroutine coro;
+        coro = StartCoroutine(Ienum);
+        coroList.Add(coro);
+        Debug.Log(coroList.Count);
+    }
+
+    public void StopCoroutines (Coroutine coro) {
+        if(coro != null) {
+            StopCoroutine(coro);
+            coro = null;
         }
     }
 
-    public void ShowMousePos() {  //координаты курсора
+    public void StopAllLocalCoroutines () {
+        foreach(var c in coroList) {
+            StopCoroutines(c);
+        }
+    }
+
+    public Vector2 ShowMousePos () {  //координаты курсора
         Vector2 vecMouse = CursorControl.GetGlobalCursorPos();
         var x = vecMouse.x;
         var y = vecMouse.y;
         mousePositionTxt.text = "x = " + x + " ;" + "y = " + y + " ;";
+        return vecMouse;
     }
 
-    void Start() {
+    void Start () {
+
         startBtn.onClick.RemoveAllListeners();
         startBtn.onClick.AddListener(() => {
-                stop = false;
-                coroMouseCoords = StartCoroutine(IMouseCoords());
-                StartCoroutine(choosingWindowDelay());
-                FishingController.inst.Fishing();
-            }
-            );
+            Debug.Log("Нажатие кнопки Старт");
+            //stop = false;
+            StartCoroutines(IMouseCoords());
+            Debug.Log("Запуск корутина вывода координат на экран");
+            StartCoroutines(IChoosingWindowDelay());
+            Debug.Log("Отстраивание окна");
+            StartCoroutines(FishingController.inst.IFishingCycle());
+            Debug.Log("Запуск основного процесса рыбалки");
+        });
 
         stopBtn.onClick.RemoveAllListeners();
         stopBtn.onClick.AddListener(() => {
-            stop = true;
-            StopAllCoroutines();
-            
+            //stop = true;
+            StopAllLocalCoroutines();
         });
     }
 
-    void Update()
-    {
-        
+    void Update () {
+
     }
 }
