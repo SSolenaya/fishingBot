@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,9 +33,9 @@ public class UI: MonoBehaviour {
 
     public IEnumerator ITestCheckColor () { // bear
         while(true) {
-            var v2 =new Vector2(450,381);
+            var v2 = CursorControl.GetGlobalCursorPos();
             c = ColorController.inst.GetPixelColor(v2);
-            Debug.Log(c.r + " " + c.g + " " + c.b + " " + c.a);
+            Debug.Log(v2 + " " + c.r + " " + c.g + " " + c.b + " " + c.a);
             yield return null;
         }
     }

@@ -58,7 +58,7 @@ public class ColorController: MonoBehaviour {
         var localColor = GetPixelColor(location);
         var exit = ColorsEqual(localColor, controlColor);
         if(!exit) {
-            Debug.Log("CheckColors " + exit + " " + localColor + " " + controlColor); //bear
+            Debug.Log("Pos " + location + " CheckColors " + localColor + " " + controlColor + " r= " + (localColor - controlColor)); //bear
         }
         return exit;
     }

@@ -1,76 +1,83 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
+﻿using System.Collections;
 using Assets.Scripts;
-using TMPro;
 using UnityEngine;
 
-public class FishingController : MonoBehaviour {
+public class FishingController: MonoBehaviour {
 
     public static FishingController inst;
     //public bool greenLight = true; // можно ли тянуть,учитывая цвет радуги
     public bool isEqual; //ведется проверка на равенство или неравенство цветов
 
-    private void Awake() {
+    private void Awake () {
         inst = this;
     }
 
     public IEnumerator IImitationLongClick (Vector2 mousePosition) {
         //имитация нажатия ЛК мыши
+        Clicker.SimulateLongClick(mousePosition);
         while(true) {
-            Clicker.SimulateLongClick(mousePosition);
-            if (!ColorController.inst.CheckColors(GlobalParameters.pointOnRainbowLocation, GlobalParameters.colorOfPointOnRainbow)) {
-                Clicker.SimulateEndOfClick(mousePosition);
+            if(!ColorController.inst.CheckColors(GlobalParameters.pointOnRainbowLocation, GlobalParameters.colorOfPointOnRainbow)) {
+                //Clicker.SimulateEndOfClick(mousePosition);
                 break;
             }
             yield return null;
         }
         Clicker.SimulateEndOfClick(mousePosition);
+        yield return new WaitForSeconds(0.5f);
     }
 
- public IEnumerator ICheckingColor (Vector2 location, Color controlColor) {
-     while(!ColorController.inst.CheckColors(location, controlColor)) {
+    public IEnumerator IEnumWaitNeedColor (Vector2 location, Color controlColor) {
+        while(!ColorController.inst.CheckColors(location, controlColor)) {
             yield return null;
         }
     }
 
     public IEnumerator IFishingCycle () { //общий корутин цикла рыбалки
         yield return new WaitForSeconds(5f);
-        yield return StartCoroutine(ICheckingColor(GlobalParameters.mainButtonLocation, GlobalParameters.colorOfMainButton));
-        yield return StartCoroutine(IEnumPressBtn(GlobalParameters.mainButtonLocation));
-
-        yield return new WaitForSeconds(2f);  //bear
-        //yield return StartCoroutine(ICheckingColor(GlobalParameters.mainButtonLocation, GlobalParameters.colorOfMainButton));
-        
         while (true) {
-            yield return StartCoroutine(IImitationLongClick(GlobalParameters.mainButtonLocation));
+            yield return new WaitForSeconds(2f);
+            yield return StartCoroutine(IEnumWaitNeedColor(GlobalParameters.mainButtonLocation, GlobalParameters.colorOfMainButton));
+            yield return StartCoroutine(IEnumPressBtn(GlobalParameters.mainButtonLocation));
+            Debug.LogError("here1");
+            yield return new WaitForSeconds(0.5f);  //bear
+            yield return StartCoroutine(IEnumWaitNeedColor(GlobalParameters.mainButtonLocation, GlobalParameters.colorOfMainButton));
+            yield return StartCoroutine(IEnumPressBtn(GlobalParameters.mainButtonLocation));
+            Debug.LogError("here2");
+            while(true) {
+                //ColorController.inst.CheckColors(GlobalParameters.pointOnRainbowLocation, GlobalParameters.colorOfFieldInFailWindow);
+                yield return StartCoroutine(IImitationLongClick(GlobalParameters.mainButtonLocation));
 
-            if(ColorController.inst.CheckColors(GlobalParameters.fieldTrofyLocation, GlobalParameters.colorOfFieldInTrofyWindow)) {
-                yield return StartCoroutine(IEnumPressBtn(GlobalParameters.btnCloseTrofyWindow));
-                break;
+                if(ColorController.inst.CheckColors(GlobalParameters.fieldTrofyLocation, GlobalParameters.colorOfFieldInTrofyWindow)) {
+                    yield return new WaitForSeconds(2f);
+                    yield return StartCoroutine(IEnumPressBtn(GlobalParameters.btnCloseTrofyWindow));
+                    break;
+                }
+                if(ColorController.inst.CheckColors(GlobalParameters.fieldFailWindowLocation, GlobalParameters.colorOfFieldInFailWindow)) {
+                    yield return new WaitForSeconds(2f);
+                    yield return StartCoroutine(IEnumPressBtn(GlobalParameters.btnCloseFailWindow));
+                    break;
+                }
+                if(Input.GetKeyDown(KeyCode.A)) {
+                    Debug.Log("STOP");
+                    break;
+                }
+                yield return null;
             }
-            if(ColorController.inst.CheckColors(GlobalParameters.fieldFailWindowLocation, GlobalParameters.colorOfFieldInFailWindow)) {
-               
-                yield return StartCoroutine(IEnumPressBtn(GlobalParameters.btnCloseFailWindow));
-                break;
-            }
-            
+
             yield return null;
         }
-     
-        yield return null;
-    }
       
-    
+       
+    }
+
+
     public IEnumerator IEnumPressBtn (Vector2 vec) { //Нажатие кнопки Закинуть
         CursorControl.SetGlobalCursorPos(vec);
         yield return new WaitForSeconds(0.1f);
         CursorControl.SimulateLeftClick();
     }
 
-    private void Start ()
-    {
-        
+    private void Start () {
+
     }
 }
