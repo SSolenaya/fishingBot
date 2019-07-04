@@ -23,7 +23,7 @@ public class FishingController: MonoBehaviour {
             yield return null;
         }
         Clicker.SimulateEndOfClick(mousePosition);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.35f);
     }
 
     public IEnumerator IEnumWaitNeedColor (Vector2 location, Color controlColor) {
@@ -41,7 +41,8 @@ public class FishingController: MonoBehaviour {
             Debug.LogError("here1");
             yield return new WaitForSeconds(0.5f);  //bear
             yield return StartCoroutine(IEnumWaitNeedColor(GlobalParameters.mainButtonLocation, GlobalParameters.colorOfMainButton));
-            yield return StartCoroutine(IEnumPressBtn(GlobalParameters.mainButtonLocation));
+            //yield return StartCoroutine(IEnumPressBtn(GlobalParameters.mainButtonLocation));
+            Clicker.SimulateLongClick(GlobalParameters.mainButtonLocation);
             Debug.LogError("here2");
             while(true) {
                 //ColorController.inst.CheckColors(GlobalParameters.pointOnRainbowLocation, GlobalParameters.colorOfFieldInFailWindow);

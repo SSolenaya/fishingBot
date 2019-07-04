@@ -479,7 +479,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c8446b0ab101ba4793c3390f7e55b7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  greenLight: 0
   isEqual: 0
 --- !u!4 &681438932
 Transform:
@@ -692,7 +691,6 @@ MonoBehaviour:
   stopBtn: {fileID: 1977375550}
   mousePositionTxt: {fileID: 1121267701}
   pixelColorTxt: {fileID: 783180224}
-  stop: 0
 --- !u!4 &1353136561
 Transform:
   m_ObjectHideFlags: 0
@@ -769,7 +767,7 @@ MonoBehaviour:
     m_FontSize: 40
     m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 4
+    m_MinSize: 1
     m_MaxSize: 60
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -817,7 +815,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd851f51d9a43584bbb74b55619789f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 519420031}
 --- !u!4 &1557159509
 Transform:
   m_ObjectHideFlags: 0

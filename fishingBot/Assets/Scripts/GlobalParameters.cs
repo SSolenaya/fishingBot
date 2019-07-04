@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 
 namespace Assets.Scripts {
-    public class GlobalParameters
-    {
+    public interface IGP {
+        Vector2 GetMainButtonLocation();
+    }
+
+    public class GlobalParameters: IGP {
         public static Vector2 mainButtonLocation = new Vector2(335, 610); // отслеживаемый пиксель кнопок Закинуть и Тянуть
         public static Vector2 pointOnRainbowLocation = new Vector2(473, 418); // отслеживаемый пиксель на индикаторе натяжения лески
         public static Vector2 fieldTrofyLocation = new Vector2(335, 610); // отслеживаемый пиксель окна трофеев
@@ -17,5 +20,11 @@ namespace Assets.Scripts {
         public static Color colorOfPointOnRainbow = new Color (0.239f, 0.388f, 0.529f, 1); // цвет индикатора лески
         public static Color colorOfFieldInTrofyWindow = new Color(0.9843137f, 0.8862745f, 0.7490196f, 1); // цвет поля в окне трофеев
         public static Color colorOfFieldInFailWindow = new Color(1f, 1f, 1f, 1); // цвет поля в окне проигрыша
+
+
+
+        public Vector2 GetMainButtonLocation() {
+            return mainButtonLocation;
+        }
     }
 }
