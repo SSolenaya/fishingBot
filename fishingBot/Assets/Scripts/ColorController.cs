@@ -40,6 +40,29 @@ public class ColorController: MonoBehaviour {
         return new Color(fr, fg, fb, fa);
     }
 
+    public bool ColorsEqual (Color c, Color controlColor) {
+        var zero = 0.01f;
+        if(Mathf.Abs(c.r - controlColor.r) > zero)
+            return false;
+        if(Mathf.Abs(c.g - controlColor.g) > zero)
+            return false;
+        if(Mathf.Abs(c.b - controlColor.b) > zero)
+            return false;
+        if(Mathf.Abs(c.a - controlColor.a) > zero)
+            return false;
+
+        return true;
+    }
+
+    public bool CheckColors (Vector2 location, Color controlColor) {
+        var localColor = GetPixelColor(location);
+        var exit = ColorsEqual(localColor, controlColor);
+        if(!exit) {
+            Debug.Log("CheckColors " + exit + " " + localColor + " " + controlColor); //bear
+        }
+        return exit;
+    }
+
     void Start () {
 
     }

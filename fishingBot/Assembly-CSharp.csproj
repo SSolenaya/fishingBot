@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\CursorControl\Examples\CursorControlExample.cs" />
+    <Compile Include="Assets\Scripts\Clicker.cs" />
     <Compile Include="Assets\Scripts\ColorController.cs" />
     <Compile Include="Assets\Scripts\FishingController.cs" />
     <Compile Include="Assets\Scripts\GlobalParameters.cs" />

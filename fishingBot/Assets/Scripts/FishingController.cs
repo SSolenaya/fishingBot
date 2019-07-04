@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Assets.Scripts;
 using TMPro;
 using UnityEngine;
@@ -15,96 +16,56 @@ public class FishingController : MonoBehaviour {
         inst = this;
     }
 
-    public IEnumerator IImitationLongClick () {
+    public IEnumerator IImitationLongClick (Vector2 mousePosition) {
         //имитация нажатия ЛК мыши
         while(true) {
-            //for (var i = 0; i < 10; i++) {
-                //for(var j = 0; j < 3; j++) {
-                    CursorControl.SimulateLeftClick();
-            CursorControl.SetGlobalCursorPos(new Vector2(335, 590) + new Vector2(UnityEngine.Random.Range(1, 5), UnityEngine.Random.Range(1, 5)));
-            //}
-            // yield return null;
-            //}
-
-
-            if(/*!CheckColors(GlobalParameters.pointOnRainbowLocation, GlobalParameters.colorOfPointOnRainbow)*/Input.GetKeyDown(KeyCode.A)) {
-               // Debug.Log("click");
+            Clicker.SimulateLongClick(mousePosition);
+            if (!ColorController.inst.CheckColors(GlobalParameters.pointOnRainbowLocation, GlobalParameters.colorOfPointOnRainbow)) {
+                Clicker.SimulateEndOfClick(mousePosition);
                 break;
-
             }
             yield return null;
         }
+        Clicker.SimulateEndOfClick(mousePosition);
     }
 
-    public bool ColorsEqual(Color c, Color controlColor) {
-        var zero = 0.1f;
-        if (Mathf.Abs(c.r - controlColor.r)>zero) return false;
-        if(Mathf.Abs(c.g- controlColor.g) > zero) return false;
-        if(Mathf.Abs(c.b - controlColor.b) > zero) return false;
-        if(Mathf.Abs(c.a - controlColor.a) > zero) return false;
-
-        return true;
-    }
-
-    public bool CheckColors(Vector2 location, Color controlColor) {
-        var localColor = ColorController.inst.GetPixelColor(location);
-        var exit = ColorsEqual(localColor, controlColor);
-      
-        //Debug.Log(localColor.r + " " + localColor.g + " " + localColor.b + " " + localColor.a);
-        if (!exit) {
-           // Debug.Log("CheckColors " + exit + " " + localColor + " " + controlColor); //bear
-        }
-        return exit;
-    }
-
-    public IEnumerator ICheckingColor (Vector2 location, Color concreteColor) { //имитация нажатия ЛК мыши
-        while(!CheckColors(location, concreteColor)) {
-            //Debug.Log("location = " + location + " " + concreteColor);
-            //CheckColors(location, controlColor);
+ public IEnumerator ICheckingColor (Vector2 location, Color controlColor) {
+     while(!ColorController.inst.CheckColors(location, controlColor)) {
             yield return null;
         }
     }
 
     public IEnumerator IFishingCycle () { //общий корутин цикла рыбалки
-        yield return new WaitForSeconds(4f);
-        Debug.Log("IFishingCycle");
+        yield return new WaitForSeconds(5f);
         yield return StartCoroutine(ICheckingColor(GlobalParameters.mainButtonLocation, GlobalParameters.colorOfMainButton));
-        Debug.Log("Кнопка Закинуть нашлась");
         yield return StartCoroutine(IEnumPressBtn(GlobalParameters.mainButtonLocation));
-        Debug.Log("Единичное нажатие");
-        //yield return new WaitForSeconds(3.0f);  //bear
-        yield return StartCoroutine(ICheckingColor(GlobalParameters.mainButtonLocation, GlobalParameters.colorOfMainButton));
-        Debug.Log("Кнопка Тянуть нашлась");
-        int t = 0;
+
+        yield return new WaitForSeconds(2f);  //bear
+        //yield return StartCoroutine(ICheckingColor(GlobalParameters.mainButtonLocation, GlobalParameters.colorOfMainButton));
+        
         while (true) {
-            yield return StartCoroutine(IImitationLongClick());
-            t++;
-            //Debug.Log("t = " + t);
-            if(CheckColors(GlobalParameters.fieldTrofyLocation, GlobalParameters.colorOffieldInTrofyWindow)) {
-               // Debug.Log("btnCloseTrofyWindow");
+            yield return StartCoroutine(IImitationLongClick(GlobalParameters.mainButtonLocation));
+
+            if(ColorController.inst.CheckColors(GlobalParameters.fieldTrofyLocation, GlobalParameters.colorOfFieldInTrofyWindow)) {
                 yield return StartCoroutine(IEnumPressBtn(GlobalParameters.btnCloseTrofyWindow));
                 break;
             }
-
-            if(CheckColors(GlobalParameters.fieldTrofyLocation, GlobalParameters.colorOffieldInFailWindow)) {
-               // Debug.Log("btnCloseFailWindow");
+            if(ColorController.inst.CheckColors(GlobalParameters.fieldFailWindowLocation, GlobalParameters.colorOfFieldInFailWindow)) {
+               
                 yield return StartCoroutine(IEnumPressBtn(GlobalParameters.btnCloseFailWindow));
                 break;
             }
-            //yield return new WaitForSeconds(0.3f);
+            
             yield return null;
         }
-        /*else if(CheckColors(GlobalParameters.fieldTrofyLocation, GlobalParameters.colorOffieldInFailWindow)) {
-            yield return StartCoroutine(IEnumPressBtn(GlobalParameters.btnCloseFailWindow));
-        }*/
+     
         yield return null;
     }
       
     
     public IEnumerator IEnumPressBtn (Vector2 vec) { //Нажатие кнопки Закинуть
-        yield return new WaitForSeconds(0.5f);
         CursorControl.SetGlobalCursorPos(vec);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
         CursorControl.SimulateLeftClick();
     }
 

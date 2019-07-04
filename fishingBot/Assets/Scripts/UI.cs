@@ -27,25 +27,25 @@ public class UI: MonoBehaviour {
         WindowMode.inst.SetCurrentPosAndSize(GlobalParameters.positionOfWindowFishing, GlobalParameters.sizeOfWindowFishing);
     }
 
- /*   [ContextMenu("TestStartITestCheckColor")]
+    [ContextMenu("TestStartITestCheckColor")]
     public void TestStartITestCheckColor() {
         StartCoroutines(ITestCheckColor());
     }
 
     public IEnumerator ITestCheckColor () { // bear
         while(true) {
-            var v2 =new Vector2(335,590);
+            var v2 =new Vector2(450,381);
             c = ColorController.inst.GetPixelColor(v2);
             Debug.Log(c.r + " " + c.g + " " + c.b + " " + c.a);
-            yield return new WaitForSeconds(1f);
+            yield return null;
         }
-    }*/
+    }
 
     public void StartCoroutines (IEnumerator Ienum) {
         Coroutine coro;
         coro = StartCoroutine(Ienum);
         coroList.Add(coro);
-        Debug.Log(coroList.Count);
+        //Debug.Log(coroList.Count);
     }
 
     public void StopCoroutines (Coroutine coro) {
@@ -73,21 +73,14 @@ public class UI: MonoBehaviour {
 
         startBtn.onClick.RemoveAllListeners();
         startBtn.onClick.AddListener(() => {
-            Debug.Log("Нажатие кнопки Старт");
-            //stop = false;
             StartCoroutines(IMouseCoords());
-            Debug.Log("Запуск корутина вывода координат на экран");
             StartCoroutines(IChoosingWindowDelay());
-            Debug.Log("Отстраивание окна");
             StartCoroutines(FishingController.inst.IFishingCycle());
-            Debug.Log("Запуск основного процесса рыбалки");
+            //Debug.Log("Запуск основного процесса рыбалки");
         });
 
         stopBtn.onClick.RemoveAllListeners();
-        stopBtn.onClick.AddListener(() => {
-            //stop = true;
-            StopAllLocalCoroutines();
-        });
+        stopBtn.onClick.AddListener(StopAllLocalCoroutines);
     }
 
     void Update () {
