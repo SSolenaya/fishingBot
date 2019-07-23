@@ -1,15 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UI: MonoBehaviour {
-    public Rect testRect;
+   // public Rect testRect;
     public Button startBtn;
     public Button stopBtn;
     public Text mousePositionTxt;
-    public Text pixelColorTxt;
+    //public ToggleGroup toggleGroup;
+    //public Toggle togglePrefab;
+    public Button btnSettingsBear;
+    public Button btnSettingsManual;
+    private ScreenSettings sSF;
+    // public Text pixelColorTxt;
     private Color c;
     //public bool stop;
     public List<Coroutine> coroList = new List<Coroutine>();
@@ -23,7 +29,7 @@ public class UI: MonoBehaviour {
 
     public IEnumerator IChoosingWindowDelay () {  //задержка времени для выбора окна рыбалки
         yield return new WaitForSeconds(2f);
-        WindowMode.inst.SetCurrentPosAndSize(GlobalParameters.positionOfWindowFishing, GlobalParameters.sizeOfWindowFishing);
+        WindowMode.inst.SetCurrentPosAndSize(_gp.GetPositionForFishingWindow(), _gp.GetSizeForFishingWindow());
     }
 
     [ContextMenu("TestStartITestCheckColor")]
@@ -80,7 +86,16 @@ public class UI: MonoBehaviour {
 
         stopBtn.onClick.RemoveAllListeners();
         stopBtn.onClick.AddListener(StopAllLocalCoroutines);
+
+        btnSettingsBear.onClick.RemoveAllListeners();
+        btnSettingsBear.onClick.AddListener(() => { ScreenSettingsFactory.GetSettings("bear"); });
+
+        btnSettingsManual.onClick.RemoveAllListeners();
+        btnSettingsManual.onClick.AddListener(() => { ScreenSettingsFactory.GetSettings("manual"); });
+
     }
+        
+
 
     void Update () {
 

@@ -7,7 +7,7 @@ public class FishingController: MonoBehaviour {
     public static FishingController inst;
     //public bool greenLight = true; // можно ли тянуть,учитывая цвет радуги
     public bool isEqual; //ведется проверка на равенство или неравенство цветов
-
+    private ScreenSettings sS;
     private void Awake () {
         inst = this;
     }
@@ -16,7 +16,7 @@ public class FishingController: MonoBehaviour {
         //имитация нажатия ЛК мыши
         Clicker.SimulateLongClick(mousePosition);
         while(true) {
-            if(!ColorController.inst.CheckColors(GlobalParameters.pointOnRainbowLocation, GlobalParameters.colorOfPointOnRainbow)) {
+            if(!ColorController.inst.CheckColors(sS.GetPositionOfPointOnRainbow(), sS.GetColorOfPointOnRainbow())) {
                 //Clicker.SimulateEndOfClick(mousePosition);
                 break;
             }
@@ -36,26 +36,26 @@ public class FishingController: MonoBehaviour {
         yield return new WaitForSeconds(5f);
         while (true) {
             yield return new WaitForSeconds(2f);
-            yield return StartCoroutine(IEnumWaitNeedColor(GlobalParameters.mainButtonLocation, GlobalParameters.colorOfMainButton));
-            yield return StartCoroutine(IEnumPressBtn(GlobalParameters.mainButtonLocation));
+            yield return StartCoroutine(IEnumWaitNeedColor(sS.GetMainBtnLocation(), sS.GetColorOfMainBtn()));
+            yield return StartCoroutine(IEnumPressBtn(sS.GetMainBtnLocation()));
             Debug.LogError("here1");
             yield return new WaitForSeconds(0.5f);  //bear
-            yield return StartCoroutine(IEnumWaitNeedColor(GlobalParameters.mainButtonLocation, GlobalParameters.colorOfMainButton));
-            //yield return StartCoroutine(IEnumPressBtn(GlobalParameters.mainButtonLocation));
-            Clicker.SimulateLongClick(GlobalParameters.mainButtonLocation);
+            yield return StartCoroutine(IEnumWaitNeedColor(sS.GetMainBtnLocation(), sS.GetColorOfMainBtn()));
+            //yield return StartCoroutine(IEnumPressBtn(ScreenSettings.mainButtonLocation));
+            Clicker.SimulateLongClick(sS.GetMainBtnLocation());
             Debug.LogError("here2");
             while(true) {
-                //ColorController.inst.CheckColors(GlobalParameters.pointOnRainbowLocation, GlobalParameters.colorOfFieldInFailWindow);
-                yield return StartCoroutine(IImitationLongClick(GlobalParameters.mainButtonLocation));
+                //ColorController.inst.CheckColors(ScreenSettings.pointOnRainbowLocation, ScreenSettings.colorOfFieldInFailWindow);
+                yield return StartCoroutine(IImitationLongClick(sS.GetMainBtnLocation()));
 
-                if(ColorController.inst.CheckColors(GlobalParameters.fieldTrofyLocation, GlobalParameters.colorOfFieldInTrofyWindow)) {
+                if(ColorController.inst.CheckColors(sS.GetPositionOfTrofyField(), sS.GetColorOfTrofyModalWin())) {
                     yield return new WaitForSeconds(2f);
-                    yield return StartCoroutine(IEnumPressBtn(GlobalParameters.btnCloseTrofyWindow));
+                    yield return StartCoroutine(IEnumPressBtn(sS.GetPositionOfBtnCloseForTrofyModalWin()));
                     break;
                 }
-                if(ColorController.inst.CheckColors(GlobalParameters.fieldFailWindowLocation, GlobalParameters.colorOfFieldInFailWindow)) {
+                if(ColorController.inst.CheckColors(sS.GetPositionOfFailModalWindow(), sS.GetColorOfFailModalWin())) {
                     yield return new WaitForSeconds(2f);
-                    yield return StartCoroutine(IEnumPressBtn(GlobalParameters.btnCloseFailWindow));
+                    yield return StartCoroutine(IEnumPressBtn(sS.GetPositionOfBtnCloseForFailModalWin()));
                     break;
                 }
                 if(Input.GetKeyDown(KeyCode.A)) {
@@ -79,6 +79,6 @@ public class FishingController: MonoBehaviour {
     }
 
     private void Start () {
-
+        sS = 
     }
 }

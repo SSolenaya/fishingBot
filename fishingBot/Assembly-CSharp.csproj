@@ -63,10 +63,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\CursorControl\Examples\CursorControlExample.cs" />
+    <Compile Include="Assets\Scripts\BearLaptop.cs" />
     <Compile Include="Assets\Scripts\Clicker.cs" />
     <Compile Include="Assets\Scripts\ColorController.cs" />
     <Compile Include="Assets\Scripts\FishingController.cs" />
-    <Compile Include="Assets\Scripts\GlobalParameters.cs" />
+    <Compile Include="Assets\Scripts\ManualInputScrenSettings.cs" />
+    <Compile Include="Assets\Scripts\ScreenSettings.cs" />
+    <Compile Include="Assets\Scripts\ScreenSettingsController.cs" />
+    <Compile Include="Assets\Scripts\ScreenSettingsFactory.cs" />
     <Compile Include="Assets\Scripts\UI.cs" />
     <Compile Include="Assets\Scripts\WindowMode.cs" />
     <None Include="Assets\CursorControl\LICENSE.txt" />
