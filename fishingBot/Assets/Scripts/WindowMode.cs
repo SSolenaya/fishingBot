@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
-
+/*
 public class WindowMode : MonoBehaviour
 {
-    public static WindowMode inst;
+   public static WindowMode inst;
 
     [DllImport("user32.dll")]
     static extern bool SetWindowPos (IntPtr hWnd, int hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
@@ -23,3 +23,4 @@ public class WindowMode : MonoBehaviour
     }
 
 }
+*/

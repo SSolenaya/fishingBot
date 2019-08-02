@@ -6,30 +6,30 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UI: MonoBehaviour {
-   // public Rect testRect;
+
+    public static UI inst;
+    public Canvas mainScreenCanvas;
+    public Canvas manualSettingsCanvas;
+    private bool isShowed;
     public Button startBtn;
     public Button stopBtn;
     public Text mousePositionTxt;
-    //public ToggleGroup toggleGroup;
-    //public Toggle togglePrefab;
     public Button btnSettingsBear;
     public Button btnSettingsManual;
-    private ScreenSettings sSF;
-    // public Text pixelColorTxt;
+    public Button oKBtn;
+    public static ScreenSettings sS;
     private Color c;
-    //public bool stop;
     public List<Coroutine> coroList = new List<Coroutine>();
 
-    public IEnumerator IMouseCoords () { // корутин координаты курсора в реальном времени
-        while(true) {
-            ShowMousePos();
-            yield return null;
-        }
+    void Awake () {
+        inst = this;
     }
+    
+    
 
     public IEnumerator IChoosingWindowDelay () {  //задержка времени для выбора окна рыбалки
         yield return new WaitForSeconds(2f);
-        WindowMode.inst.SetCurrentPosAndSize(_gp.GetPositionForFishingWindow(), _gp.GetSizeForFishingWindow());
+      //  WindowMode.inst.SetCurrentPosAndSize(sS.GetPositionForFishingWindow(), sS.GetSizeForFishingWindow());
     }
 
     [ContextMenu("TestStartITestCheckColor")]
@@ -39,7 +39,7 @@ public class UI: MonoBehaviour {
 
     public IEnumerator ITestCheckColor () { // bear
         while(true) {
-            var v2 = CursorControl.GetGlobalCursorPos();
+            var v2 = new Vector2(473, 418);
             c = ColorController.inst.GetPixelColor(v2);
             Debug.Log(v2 + " " + c.r + " " + c.g + " " + c.b + " " + c.a);
             yield return null;
@@ -66,19 +66,20 @@ public class UI: MonoBehaviour {
         }
     }
 
-    public Vector2 ShowMousePos () {  //координаты курсора
-        Vector2 vecMouse = CursorControl.GetGlobalCursorPos();
-        var x = vecMouse.x;
-        var y = vecMouse.y;
-        mousePositionTxt.text = "x = " + x + " ;" + "y = " + y + " ;";
-        return vecMouse;
+  public void SwapCanvas() {
+        mainScreenCanvas.gameObject.SetActive(!isShowed);
+        manualSettingsCanvas.gameObject.SetActive(isShowed);
+        isShowed = !isShowed;
     }
 
     void Start () {
 
+        isShowed = false;
+        SwapCanvas();
+        
         startBtn.onClick.RemoveAllListeners();
         startBtn.onClick.AddListener(() => {
-            StartCoroutines(IMouseCoords());
+            //StartCoroutines(IMouseCoords());
             StartCoroutines(IChoosingWindowDelay());
             StartCoroutines(FishingController.inst.IFishingCycle());
             //Debug.Log("Запуск основного процесса рыбалки");
@@ -88,16 +89,18 @@ public class UI: MonoBehaviour {
         stopBtn.onClick.AddListener(StopAllLocalCoroutines);
 
         btnSettingsBear.onClick.RemoveAllListeners();
-        btnSettingsBear.onClick.AddListener(() => { ScreenSettingsFactory.GetSettings("bear"); });
+        btnSettingsBear.onClick.AddListener(() => { sS = ScreenSettingsFactory.GetSettings("bear"); });
 
         btnSettingsManual.onClick.RemoveAllListeners();
-        btnSettingsManual.onClick.AddListener(() => { ScreenSettingsFactory.GetSettings("manual"); });
+        btnSettingsManual.onClick.AddListener(() => {
+            sS = ScreenSettingsFactory.GetSettings("manual");
+            SwapCanvas();
+        });
 
-    }
-        
-
-
-    void Update () {
+        oKBtn.onClick.RemoveAllListeners();
+        oKBtn.onClick.AddListener(() => {
+            SwapCanvas();
+        });
 
     }
 }

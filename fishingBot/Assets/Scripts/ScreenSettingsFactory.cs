@@ -7,6 +7,8 @@ using Assets.Scripts;
 using UnityEngine;
 
 public static class ScreenSettingsFactory {
+
+
     private static Dictionary<string, Type> settingsByName;
     private static bool Initialized = settingsByName != null;
 
@@ -20,7 +22,7 @@ public static class ScreenSettingsFactory {
             var tempSettings = Activator.CreateInstance(setting) as ScreenSettings;
             settingsByName.Add(tempSettings.Name, setting);
         }
-        }
+    }
 
     public static ScreenSettings GetSettings(string settingsType) {
         InitializeFactory();
@@ -36,6 +38,6 @@ public static class ScreenSettingsFactory {
         InitializeFactory();
         return settingsByName.Keys;
     }
-}
 
+}
     
