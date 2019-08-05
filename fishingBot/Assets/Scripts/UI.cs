@@ -13,10 +13,12 @@ public class UI: MonoBehaviour {
     private bool isShowed;
     public Button startBtn;
     public Button stopBtn;
-    public Text mousePositionTxt;
+    public Text programStateTxt;
+    public Text colorTest1; //bear
+    public Text colorTest2;  // bear
     public Button btnSettingsBear;
     public Button btnSettingsManual;
-    public Button oKBtn;
+    //public Button oKBtn;
     public static ScreenSettings sS;
     private Color c;
     public List<Coroutine> coroList = new List<Coroutine>();
@@ -25,11 +27,10 @@ public class UI: MonoBehaviour {
         inst = this;
     }
     
-    
-
     public IEnumerator IChoosingWindowDelay () {  //задержка времени для выбора окна рыбалки
         yield return new WaitForSeconds(2f);
-      //  WindowMode.inst.SetCurrentPosAndSize(sS.GetPositionForFishingWindow(), sS.GetSizeForFishingWindow());
+        WindowMode.inst.SetCurrentPosAndSize(sS.GetPositionForFishingWindow(), sS.GetSizeForFishingWindow());
+        programStateTxt.text = "set position forfishing window";
     }
 
     [ContextMenu("TestStartITestCheckColor")]
@@ -46,9 +47,9 @@ public class UI: MonoBehaviour {
         }
     }
 
-    public void StartCoroutines (IEnumerator Ienum) {
+    public void StartCoroutines (IEnumerator ienum) {
         Coroutine coro;
-        coro = StartCoroutine(Ienum);
+        coro = StartCoroutine(ienum);
         coroList.Add(coro);
         //Debug.Log(coroList.Count);
     }
@@ -89,7 +90,10 @@ public class UI: MonoBehaviour {
         stopBtn.onClick.AddListener(StopAllLocalCoroutines);
 
         btnSettingsBear.onClick.RemoveAllListeners();
-        btnSettingsBear.onClick.AddListener(() => { sS = ScreenSettingsFactory.GetSettings("bear"); });
+        btnSettingsBear.onClick.AddListener(() => {
+            sS = ScreenSettingsFactory.GetSettings("bear");
+            programStateTxt.text = "bearLaptop Screen Settings is active";
+        });
 
         btnSettingsManual.onClick.RemoveAllListeners();
         btnSettingsManual.onClick.AddListener(() => {
@@ -97,10 +101,7 @@ public class UI: MonoBehaviour {
             SwapCanvas();
         });
 
-        oKBtn.onClick.RemoveAllListeners();
-        oKBtn.onClick.AddListener(() => {
-            SwapCanvas();
-        });
+        
 
     }
 }

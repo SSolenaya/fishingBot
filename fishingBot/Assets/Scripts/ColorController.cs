@@ -56,6 +56,7 @@ public class ColorController: MonoBehaviour {
 
     public bool CheckColors (Vector2 location, Color controlColor) {
         var localColor = GetPixelColor(location);
+        UI.inst.colorTest1.text += localColor.ToString();
         var exit = ColorsEqual(localColor, controlColor);
         if(!exit) {
             Debug.Log("Pos " + location + " CheckColors " + localColor + " " + controlColor + " r= " + (localColor - controlColor)); //bear

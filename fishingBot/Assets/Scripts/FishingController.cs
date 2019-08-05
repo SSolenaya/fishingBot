@@ -36,12 +36,12 @@ public class FishingController: MonoBehaviour {
             yield return new WaitForSeconds(2f);
             yield return StartCoroutine(IEnumWaitSaughtforColor(UI.sS.GetMainBtnLocation(), UI.sS.GetColorOfMainBtn()));
             yield return StartCoroutine(IEnumPressBtn(UI.sS.GetMainBtnLocation()));
-            Debug.LogError("here1");
+            UI.inst.programStateTxt.text = "button Закинуть is pressed";
             yield return new WaitForSeconds(0.5f);  //bear
             yield return StartCoroutine(IEnumWaitSaughtforColor(UI.sS.GetMainBtnLocation(), UI.sS.GetColorOfMainBtn()));
             //yield return StartCoroutine(IEnumPressBtn(ScreenSettings.mainButtonLocation));
             Clicker.SimulateLongClick(UI.sS.GetMainBtnLocation());
-            Debug.LogError("here2");
+            UI.inst.programStateTxt.text = "button Тянуть is pressed";
             while(true) {
                 //ColorController.inst.CheckColors(ScreenSettings.pointOnRainbowLocation, ScreenSettings.colorOfFieldInFailWindow);
                 yield return StartCoroutine(IImitationLongClick(UI.sS.GetMainBtnLocation()));
