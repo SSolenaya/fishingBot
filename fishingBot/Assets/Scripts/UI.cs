@@ -18,7 +18,6 @@ public class UI: MonoBehaviour {
     public Text colorTest2;  // bear
     public Button btnSettingsBear;
     public Button btnSettingsManual;
-    //public Button oKBtn;
     public static ScreenSettings sS;
     private Color c;
     public List<Coroutine> coroList = new List<Coroutine>();

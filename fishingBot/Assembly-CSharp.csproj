@@ -66,11 +66,12 @@
     <Compile Include="Assets\Scripts\Clicker.cs" />
     <Compile Include="Assets\Scripts\ColorController.cs" />
     <Compile Include="Assets\Scripts\FishingController.cs" />
-    <Compile Include="Assets\Scripts\ManualInputScrenSettings.cs" />
+    <Compile Include="Assets\Scripts\ManualInputScreenSettings.cs" />
     <Compile Include="Assets\Scripts\ManualSettingsController.cs" />
+    <Compile Include="Assets\Scripts\MousePositionService.cs" />
+    <Compile Include="Assets\Scripts\PrefabToggle.cs" />
     <Compile Include="Assets\Scripts\ScreenSettings.cs" />
     <Compile Include="Assets\Scripts\ScreenSettingsFactory.cs" />
-    <Compile Include="Assets\Scripts\TestMousePosition.cs" />
     <Compile Include="Assets\Scripts\UI.cs" />
     <Compile Include="Assets\Scripts\WindowMode.cs" />
     <Reference Include="Unity.Timeline.Editor">
