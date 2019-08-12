@@ -29,8 +29,5 @@ namespace Assets.Scripts {
         public abstract Color GetColorOfTrofyModalWin();
 
         public abstract Color GetColorOfFailModalWin();
-
-
-
     }
 }

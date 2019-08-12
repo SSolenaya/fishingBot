@@ -92,15 +92,31 @@ public class UI: MonoBehaviour {
         btnSettingsBear.onClick.AddListener(() => {
             sS = ScreenSettingsFactory.GetSettings("bear");
             programStateTxt.text = "bearLaptop Screen Settings is active";
+
         });
 
         btnSettingsManual.onClick.RemoveAllListeners();
         btnSettingsManual.onClick.AddListener(() => {
-            sS = ScreenSettingsFactory.GetSettings("manual");
+            CreateManualSettings();
+            ManualSettingsController.inst.BindingTextAndPrefabs();
             SwapCanvas();
+           
         });
 
         
 
     }
+
+    public void CreateManualSettings() {
+        var key = ManualSettingsController.inst.keyForPlayerPrefs;
+        var json = PlayerPrefs.GetString(key, "{}");
+       var sS1 = JsonUtility.FromJson<ManualInputScreenSettings>(json);
+        if(sS1 != null) {
+            sS = sS1;
+        }
+        if(sS == null) {
+            sS = ScreenSettingsFactory.GetSettings("manual");
+        }
+    }
+
 }
