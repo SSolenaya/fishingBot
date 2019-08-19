@@ -41,8 +41,8 @@ public class ColorController: MonoBehaviour {
         return new Color(fr, fg, fb, fa);
     }
 
-    public bool ColorsEqual (Color c, Color controlColor) {
-        var zero = 0.01f;
+    public bool ColorsEqual (Color c, Color controlColor, float zero = 0.01f) {
+        
         if(Mathf.Abs(c.r - controlColor.r) > zero)
             return false;
         if(Mathf.Abs(c.g - controlColor.g) > zero)

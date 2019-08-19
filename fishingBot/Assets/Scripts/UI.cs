@@ -29,7 +29,7 @@ public class UI: MonoBehaviour {
     public IEnumerator IChoosingWindowDelay () {  //задержка времени для выбора окна рыбалки
         yield return new WaitForSeconds(2f);
         WindowMode.inst.SetCurrentPosAndSize(sS.GetPositionForFishingWindow(), sS.GetSizeForFishingWindow());
-        programStateTxt.text = "set position forfishing window";
+        programStateTxt.text = "set position for fishing window";//bear
     }
 
     [ContextMenu("TestStartITestCheckColor")]
