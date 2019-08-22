@@ -6,3 +6,8 @@ fishingBot/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92
 fishingBot/obj/Debug
 fishingBot/Library
 fishingBot/.vs/fishingBot/DesignTimeBuild/.dtbcache
+fishingBot/Temp
+fishingBot/Unity.Analytics.DataPrivacy.csproj
+fishingBot/Unity.CollabProxy.Editor.csproj
+fishingBot/Unity.TextMeshPro.Editor.csproj
+fishingBot/Unity.TextMeshPro.csproj
