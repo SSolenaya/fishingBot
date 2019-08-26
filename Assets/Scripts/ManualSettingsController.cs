@@ -119,7 +119,7 @@ public class ManualSettingsController: MonoBehaviour {
 
     public void BindingTextAndPrefabs () {
         for(int i = 0; i < listPrefabToggles.Count; i++) {
-            listPrefabToggles[i].text = textGroupData.GetComponentsInChildren<Text>()[i + 1];
+            listPrefabToggles[i].text = textGroupData.GetComponentsInChildren<Text>()[i];
             ReverseReferenceToSettings(listPrefabToggles[i]);
         }
         ReverseReferenceToSettings(pointOnRainbowTog);
