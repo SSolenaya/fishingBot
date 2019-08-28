@@ -23,6 +23,9 @@ namespace Assets.Scripts {
         public Vector2 location;
         public Color color;
 
+        private bool boolVar;
+        private int numberOne;
+
         public void Awake() {
             toggle = GetComponent<Toggle>();
         }
