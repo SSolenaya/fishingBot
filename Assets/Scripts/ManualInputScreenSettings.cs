@@ -33,11 +33,11 @@ public class ManualInputScreenSettings : ScreenSettings {
         return pointOnRainbowLocation;
     }
     public override Vector2 GetPositionOfTrofyField () {
-        fieldTrofyLocation = mainButtonLocation;
+        //fieldTrofyLocation = mainButtonLocation;
         return fieldTrofyLocation;
     }
     public override Vector2 GetPositionOfFailModalWindow () {
-        fieldFailWindowLocation = mainButtonLocation;
+        //fieldFailWindowLocation = mainButtonLocation;
         return fieldFailWindowLocation;
     }
     public override Vector2 GetPositionOfBtnCloseForTrofyModalWin () {

@@ -98,7 +98,7 @@ public class UI: MonoBehaviour {
         btnSettingsManual.onClick.RemoveAllListeners();
         btnSettingsManual.onClick.AddListener(() => {
             CreateManualSettings();
-            ManualSettingsController.inst.BindingTextAndPrefabs();
+            
             SwapCanvas();
            
         });
@@ -110,13 +110,15 @@ public class UI: MonoBehaviour {
     public void CreateManualSettings() {
         var key = ManualSettingsController.inst.keyForPlayerPrefs;
         var json = PlayerPrefs.GetString(key, "{}");
-       var sS1 = JsonUtility.FromJson<ManualInputScreenSettings>(json);
+        var sS1 = JsonUtility.FromJson<ManualInputScreenSettings>(json);
         if(sS1 != null) {
             sS = sS1;
         }
         if(sS == null) {
             sS = ScreenSettingsFactory.GetSettings("manual");
         }
+
+        ManualSettingsController.inst.BindingTextAndPrefabs();
     }
 
 }

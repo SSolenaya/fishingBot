@@ -12,12 +12,14 @@ public class ManualSettingsController: MonoBehaviour {
 
     public static ManualSettingsController inst;
 
-    //public ToggleGroup toggleGroup;  //bear
+    public ToggleGroup toggleGroup;  //bear
     public PrefabToggle pointOnRainbowTog;
     public List<PrefabToggle> listPrefabToggles;
     public GameObject textGroupData;
+    public Text textForRainbowPoint;
     public Button oKBtn;
     public Button findBtn;
+    public Button saveBtn;
     private Coroutine coro;
     private InputField _coordsRainbow;
     private InputField _colorRainbow;
@@ -38,7 +40,10 @@ public class ManualSettingsController: MonoBehaviour {
         var rainTog = pointOnRainbowTog.toggle;
 
         oKBtn.onClick.RemoveAllListeners();
-        oKBtn.onClick.AddListener(() => { UI.inst.SwapCanvas(); });
+        oKBtn.onClick.AddListener(() => {
+            UI.inst.SwapCanvas();
+            SavingData();
+        });
 
         findBtn.onClick.RemoveAllListeners();
         findBtn.onClick.AddListener(() => {
@@ -48,22 +53,31 @@ public class ManualSettingsController: MonoBehaviour {
 
         rainTog.onValueChanged.RemoveAllListeners();
         rainTog.onValueChanged.AddListener((var) => {
+            toggleGroup.allowSwitchOff = true;
+            toggleGroup.SetAllTogglesOff();
             /* _coordsRainbow.gameObject.SetActive(var);
              _colorRainbow.gameObject.SetActive(var);
              if(var) {*/
+            
             _coordsRainbow.onValueChanged.RemoveAllListeners();
             _coordsRainbow.onValueChanged.AddListener((txt) => {
                 var v2 = ReadingCoordsInputField(_coordsRainbow.text);
                 if(v2 != Vector2.zero) {
                     tempV2 = v2;
                 }
-                if(coro == null) {
+                if(var && coro == null) {
                     coro = StartCoroutine(IEColorOnRaibow());
                 }
             });
             if(!var && coro != null) {
                 StopCoroutine(coro);
             }
+         });
+
+        saveBtn.onClick.RemoveAllListeners();
+        saveBtn.onClick.AddListener(() => {
+            ReferenceToSettings(pointOnRainbowTog);
+            ToggleText(pointOnRainbowTog, tempV2, tempColor);
         });
     }
 
@@ -122,9 +136,8 @@ public class ManualSettingsController: MonoBehaviour {
             listPrefabToggles[i].text = textGroupData.GetComponentsInChildren<Text>()[i];
             ReverseReferenceToSettings(listPrefabToggles[i]);
         }
+        pointOnRainbowTog.text = textForRainbowPoint;
         ReverseReferenceToSettings(pointOnRainbowTog);
-        /*TESTJSON = PlayerPrefs.GetString(keyForPlayerPrefs); // bear
-        Debug.Log(TESTJSON); */ // bear
     }
 
     public PrefabToggle GetPrefabToggleEnable () {
@@ -139,7 +152,6 @@ public class ManualSettingsController: MonoBehaviour {
     public void SavingData () {
         var m = UI.sS as ManualInputScreenSettings;
         string json = JsonUtility.ToJson(m);
-        TESTJSON = json; //bear
         PlayerPrefs.SetString(keyForPlayerPrefs, json);
     }
 
@@ -153,7 +165,7 @@ public class ManualSettingsController: MonoBehaviour {
             case TypeToggle.pointOnRainbow:
                 man.pointOnRainbowLocation = tt.location;
                 man.colorOfPointOnRainbow = tt.color;
-                Debug.Log(tt.location + " " + tt.color); //bear
+                Debug.Log("rainbow" + " " + tt.location + " " + tt.color); //bear
                 break;
             case TypeToggle.fieldTrofy:
                 man.fieldTrofyLocation = tt.location;
@@ -181,7 +193,7 @@ public class ManualSettingsController: MonoBehaviour {
                 ToggleText(tt, man.mainButtonLocation, man.colorOfMainButton);
                 break;
             case TypeToggle.pointOnRainbow:
-                ToggleText(tt, man.pointOnRainbowLocation, man.colorOfPointOnRainbow);
+                ToggleText(tt, man.GetPositionOfPointOnRainbow(), man.GetColorOfPointOnRainbow());
                 break;
             case TypeToggle.fieldTrofy:
                 ToggleText(tt, man.fieldTrofyLocation, man.colorOfFieldInTrofyWindow);
