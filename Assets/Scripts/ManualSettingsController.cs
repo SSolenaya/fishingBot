@@ -24,7 +24,6 @@ public class ManualSettingsController: MonoBehaviour {
     private InputField _coordsRainbow;
     private InputField _colorRainbow;
 
-    public string TESTJSON;
     public string keyForPlayerPrefs = "current manual settings";
 
     public Vector2 tempV2;

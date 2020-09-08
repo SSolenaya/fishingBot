@@ -19,8 +19,7 @@ public static class ScreenSettingsFactory {
             myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(ScreenSettings)));
         settingsByName = new Dictionary<string, Type>();
         foreach (var setting in settings) {
-            var tempSettings = Activator.CreateInstance(setting) as ScreenSettings;
-            settingsByName.Add(tempSettings.Name, setting);
+            if (Activator.CreateInstance(setting) is ScreenSettings tempSettings) settingsByName.Add(tempSettings.Name, setting);
         }
     }
 
